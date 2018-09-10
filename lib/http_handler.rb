@@ -3,8 +3,18 @@ require 'pry'
 
 class HttpHandler
 
+  # Response Object Struct with Body and Status Code
   ResponseObject = Struct.new(:body, :status)
 
+  #
+  # <Simple Get Request>
+  #
+  # @param [String] url URL to send request to
+  # @param [Object] body Body as Object (Converted to JSON Automatically)
+  # @param [Object] headers Required Headers as Object
+  #
+  # @return [ResponseObject]
+  #
   def get(url: nil, headers: {}, params: {})
     return 'No URL Provided' unless url
       
@@ -19,11 +29,11 @@ class HttpHandler
   #
   # Simple Post Request>
   #
-  # @param [String] url <URL to send request to
+  # @param [String] url URL to send request to
   # @param [Object] body Body as Object (Converted to JSON Automatically)
   # @param [Object] headers Required Headers as Object
   #
-  # @return [String] Return the Body of the request
+  # @return [ResponseObject] Return the Body of the request
   #
   def post(url: nil, body: nil, headers: {'Content-Type': 'application/json'})
     return 'No URL Provided' unless url
