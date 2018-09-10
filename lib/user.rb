@@ -5,10 +5,10 @@ require 'http_handler'
 
 class User
   #
-  # <Initialzer>
+  # Initialzer
   #
-  # @param [<String>] username
-  # @param [<String>] key
+  # @param [String] username
+  # @param [String] key
   #
   def initialize(username, key)
     @http = HttpHandler.new
@@ -18,22 +18,22 @@ class User
   end
 
   #
-  # <Return the username from user Object>
+  # Return the username from user Object
   #
-  # @return [<Boolean>]
+  # @return [Boolean]
   #
   def username
     @username
   end
 
   #
-  # <Fetch Token from API>
+  # Fetch Token from API
   #
-  # @return [<String>] <Will save token to class and return token string>
+  # @return [String] Will save token to class and return token string
   #
   def get_token
     # uri = URI(ENV['LOGIN_URL'])
-    # req = Net::HTTP::Post.new(uri, 'Content-Type' => 'application/json')
+    # req = Net::HTTP::Post.new(uri, 'Content-Type' = 'application/json')
     # req.body = {username: @username, apikey: @key}.to_json
     # res = Net::HTTP.start(uri.hostname, uri.port) do |http|
     #   @token = JSON.parse(http.request(req).read_body)['token']
@@ -50,9 +50,9 @@ class User
   end
 
   #
-  # <Return logged in status>
+  # Return logged in status
   #
-  # @return [<Boolean>] <Logged In Status>
+  # @return [Boolean] Logged In Status
   #
   def logged_in?
     @token ? true : false

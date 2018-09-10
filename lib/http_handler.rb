@@ -3,6 +3,15 @@ require 'pry'
 
 class HttpHandler
 
+  #
+  # Simple Post Request>
+  #
+  # @param [String] url <URL to send request to
+  # @param [Object] body Body as Object (Converted to JSON Automatically)
+  # @param [Object] headers Required Headers as Object
+  #
+  # @return [String] Return the Body of the request
+  #
   def post(url: nil, body: nil, headers: {'Content-Type': 'application/json'})
     return 'No URL Provided' unless url
 
