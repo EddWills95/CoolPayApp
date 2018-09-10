@@ -1,4 +1,12 @@
 module Helpers
+  def mock_simple_post
+    stub_request(:post, "http://test.com")
+      .to_return(
+        body: 'Success',
+        status: 200
+      )
+  end
+
   def mock_login
     stub_request(:post, "http://coolpay.herokuapp.com:443/api/login")
     .with(
