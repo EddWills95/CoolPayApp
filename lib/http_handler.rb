@@ -3,6 +3,19 @@ require 'pry'
 
 class HttpHandler
 
+  ResponseObject = Struct.new(:body, :status)
+
+  def get(url: nil, headers: {}, params: {})
+    return 'No URL Provided' unless url
+      
+    uri = URI(url)
+    req = Net::HTTP.Get.new(url, headers)
+    res = Net::HTTP.start(uri.hostname, uri.port) do |http|
+      http.request(req)
+    end
+    ResponseObject.new(res.read_body, res.code)
+  end
+
   #
   # Simple Post Request>
   #
@@ -19,8 +32,9 @@ class HttpHandler
     req = Net::HTTP::Post.new(uri, headers)
     req.body = body.to_json unless !body
     res = Net::HTTP.start(uri.hostname, uri.port) do |http|
-      http.request(req).read_body
+      http.request(req)
     end
+    ResponseObject.new(res.read_body, res.code)
   end
 
 end

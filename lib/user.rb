@@ -32,14 +32,14 @@ class User
   # @return [String] Will save token to class and return token string
   #
   def get_token
-    temp_token = @http.post(
+    response = @http.post(
       url: ENV['LOGIN_URL'],
       body: {
         username: @username,
         apikey: @key
       }.to_json
     )
-    @token = JSON.parse(temp_token)['token']
+    @token = JSON.parse(response.body)['token']
   end
 
   #
