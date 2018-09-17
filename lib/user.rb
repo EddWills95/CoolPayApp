@@ -2,8 +2,8 @@ require 'dotenv'
 Dotenv.load
 require 'json'
 require 'rest_client'
-require 'recipient'
-require 'payment'
+require_relative 'recipient'
+require_relative 'payment'
 
 class User
   #
