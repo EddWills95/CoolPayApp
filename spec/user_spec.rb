@@ -20,12 +20,12 @@ RSpec.describe User do
     expect(user.logged_in?).to eq(true)
   end
 
-  describe 'possible recpients' do
-    
+  describe 'recipients' do
     before do
       mock_login
       mock_recipients
       mock_search_recipients
+      mock_add_recipient
       user.get_token
     end
 
@@ -35,6 +35,10 @@ RSpec.describe User do
 
     it 'should return searched recipients' do
       expect(user.search_recipients('joe').first.name).to eq('Joe Bloggs')
+    end
+
+    it 'should be able to add recipients' do
+      expect(user.add_recipient('Jeffery Archer').id).to eq('e9a0336b-d81d-4009-9ad1-8fa1eb43418c')
     end
   end
 end

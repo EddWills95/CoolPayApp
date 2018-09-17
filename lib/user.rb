@@ -87,7 +87,24 @@ class User
     JSON.parse(response.body)['recipients'].map { |json| Recipient.new(json) }
   end
 
+  def add_recipient(name)
+    body = `{
+      "recipient": {
+        "name": "#{name}"
+      }
+    `
 
+    response = @http.post(
+      ENV['RECIPIENTS_URL'],
+      body,
+      {
+        content_type: 'application/json',
+        authorization: "Bearer #{@token}"
+      }
+    )
+
+    Recipient.new(JSON.parse(response.body)['recipient'])
+  end
 end
 
 # Do some error catching !

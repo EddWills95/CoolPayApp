@@ -65,4 +65,24 @@ module Helpers
       ]
     }.to_json, headers: {})
   end
+
+  def mock_add_recipient
+    stub_request(:post, "https://coolapy.herokuapp.com/api/recipients").
+    with(
+      headers: {
+      'Accept'=>'*/*',
+      'Accept-Encoding'=>'gzip, deflate',
+      'Authorization'=>'Bearer aff06fec-e041-4994-849e-223f0569e0bc',
+      'Content-Length'=>'0',
+      'Content-Type'=>'application/json',
+      'Host'=>'coolapy.herokuapp.com',
+      'User-Agent'=>'rest-client/2.0.2 (darwin18.0.0 x86_64) ruby/2.5.1p57'
+      }).
+    to_return(status: 200, body: {
+      recipient: {
+        id: 'e9a0336b-d81d-4009-9ad1-8fa1eb43418c',
+        name: 'Jeffery Archer'
+      }
+    }.to_json, headers: {})
+  end
 end
