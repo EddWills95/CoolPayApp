@@ -1,7 +1,7 @@
 require 'dotenv'
 Dotenv.load
 require 'json'
-require 'http_handler'
+require 'rest_client'
 
 class User
   #
@@ -11,7 +11,7 @@ class User
   # @param [String] key
   #
   def initialize(username, key)
-    @http = HttpHandler.new
+    @http = RestClient
     @username = username
     @key = key
     @token = nil
@@ -33,8 +33,8 @@ class User
   #
   def get_token
     response = @http.post(
-      url: ENV['LOGIN_URL'],
-      body: {
+      ENV['LOGIN_URL'],
+      {
         username: @username,
         apikey: @key
       }.to_json

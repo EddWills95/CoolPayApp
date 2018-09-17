@@ -11,5 +11,6 @@ gem 'pry'
 gem 'rspec'
 gem 'webmock'
 gem 'dotenv'
+gem 'rest-client'
 
 
