@@ -125,19 +125,19 @@ class User
   # @return [Payment] Payment Object
   #
   def create_payment(payee, amount)
-    body = `{
-      "payment": {
-        "amount": #{amount},
-        "currency": "GBP"
-        recipient_id: #{payee.id}
-      }
-    }`
-
     response = @http.post(
       ENV['PAYMENT_URL'],
-      body,
-      content_type: 'application/json',
-      authorization: "Bearer #{@token}"
+      {
+        payment: {
+          amount: amount,
+          currency: 'GBP',
+          recipient_id: payee.id 
+        }
+      }.to_json, 
+      {
+        content_type: 'application/json',
+        authorization: "Bearer #{@token}"
+      }
     )
 
     payment = Payment.new(JSON.parse(response.body)['payment'])

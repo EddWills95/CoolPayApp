@@ -74,7 +74,11 @@ class Coolpay
   end
 
   def self.display_payments(payments)
-    puts payments.map(&:value) + `\n`
+    # puts payments.map(&:amount) + `\n`
+    payments.each do |p|
+      puts "#{p.amount}//#{p.currency}"
+      sleep(2)
+    end
   end
 
   def self.payments
@@ -86,19 +90,22 @@ class Coolpay
         self.display_payments(payments)
         sleep(1)
         self.payments
-      else
-        puts 'None to display'
-        sleep(1)
-        self.payments
       end
+      self.payments
+      # else
+      #   puts 'None to display'
+      #   sleep(1)
+      #   self.payments
+      # end
     when 'New'
       recipients = @user.fetch_all_recipients
       payee = gets_list(recipients.map(&:name))
+      payee_obj = recipients.select { |r| r.name == payee }.first
       puts `clear`
       puts 'Amount: '
-      amount = gets
-      payment = @user.create_payment(payee.id, amount)
-      puts payment 
+      amount = gets.chomp
+      payment = @user.create_payment(payee_obj, amount)
+      puts payment.amount
       sleep(2)
       self.payments
     when 'Back'
@@ -113,7 +120,7 @@ class Coolpay
     levels = [
       ['Authenticate', 'Exit'],
       ['Recipients', 'Payments', 'Exit'],
-      ['List', 'Add', 'Remove', 'Back'],
+      ['List', 'Add', 'Back'],
       ['List', 'New', 'Back']
     ] 
   end
@@ -133,7 +140,7 @@ while true
     if user.logged_in?
       Coolpay.user = user
       Coolpay.clear
-      selection = Coolpay.authenticated
+      Coolpay.authenticated
     end
   when 'Exit'
     break;
