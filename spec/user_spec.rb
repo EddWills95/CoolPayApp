@@ -68,8 +68,6 @@ RSpec.describe User do
       status = user.lookup_payment('31db334f-9ac0-42cb-804b-09b2f899d4d2').status
       expect(status).to eq('paid')
     end
-  
   end
-
 end
 
