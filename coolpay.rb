@@ -1,4 +1,4 @@
-Dir["./lib/*.rb"].each {|file| require_relative file }
+Dir['./lib/*.rb'].each { |file| require_relative file }
 
 require_relative './lib/user'
 
@@ -8,12 +8,12 @@ include FancyGets
 require 'pry'
 
 class Coolpay
-  attr_accessor :level  
+  attr_accessor :level
   @level = 0
   @user = nil
 
-  def self.user=(user)
-    @user = user
+  class << self
+    attr_writer :user
   end
 
   def self.start
@@ -33,9 +33,9 @@ class Coolpay
     puts "Hello #{@user.username}"
     case selection
     when 'Recipients'
-      self.recipients
+      recipients
     when 'Payments'
-      self.payments
+      payments
     when 'Exit'
       return nil
     end
@@ -46,8 +46,8 @@ class Coolpay
     case selection
     when 'List'
       recipients = @user.fetch_all_recipients
-      if recipients.length > 0
-        self.display_recipients(recipients)
+      if !recipients.empty?
+        display_recipients(recipients)
         sleep(1)
         self.recipients
       else
@@ -56,15 +56,15 @@ class Coolpay
         self.recipients
       end
     when 'Add'
-      puts "Input a name"
+      puts 'Input a name'
       name = gets
-      
+
       new_recip = @user.add_recipient(name)
       puts "#{new_recip.name} added!"
       sleep(1)
-      self.recipients 
+      self.recipients
     when 'Back'
-      self.authenticated
+      authenticated
       return 'Exit'
     end
   end
@@ -86,8 +86,8 @@ class Coolpay
     case selection
     when 'List'
       payments = @user.fetch_all_payments
-      if payments.length > 0
-        self.display_payments(payments)
+      unless payments.empty?
+        display_payments(payments)
         sleep(1)
         self.payments
       end
@@ -109,27 +109,27 @@ class Coolpay
       sleep(2)
       self.payments
     when 'Back'
-      self.authenticated
+      authenticated
       return 'Exit'
     end
   end
 
   private
-  def self.levels 
+
+  def self.levels
     puts `clear`
     levels = [
-      ['Authenticate', 'Exit'],
-      ['Recipients', 'Payments', 'Exit'],
-      ['List', 'Add', 'Back'],
-      ['List', 'New', 'Back']
-    ] 
+      %w[Authenticate Exit],
+      %w[Recipients Payments Exit],
+      %w[List Add Back],
+      %w[List New Back]
+    ]
   end
 end
 
-
 selection = Coolpay.start
 
-while true
+loop do
   case selection
   when 'Authenticate'
     Coolpay.clear
@@ -143,9 +143,9 @@ while true
       Coolpay.authenticated
     end
   when 'Exit'
-    break;
+    break
   end
   Coolpay.clear
   puts 'Thanks for playing'
-  break;
+  break
 end

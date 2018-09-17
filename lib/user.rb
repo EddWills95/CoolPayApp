@@ -35,11 +35,12 @@ class User
   #
   def get_token
     response = @http.post(
-      ENV['LOGIN_URL'], 
+      ENV['LOGIN_URL'],
       {
-        username: @username, 
-        apikey: @key 
-      }.to_json, { content_type: 'application/json' })
+        username: @username,
+        apikey: @key
+      }.to_json, content_type: 'application/json'
+    )
     @token = JSON.parse(response.body)['token']
   end
 
@@ -62,10 +63,8 @@ class User
   def fetch_all_recipients
     response = @http.get(
       ENV['RECIPIENTS_URL'],
-      {
-        content_type: 'application/json',
-        authorization: "Bearer #{@token}"
-      }
+      content_type: 'application/json',
+      authorization: "Bearer #{@token}"
     )
     incoming = JSON.parse(response.body)['recipients'].map { |json| Recipient.new(json) }
     @recipients = incoming
@@ -104,13 +103,11 @@ class User
       ENV['RECIPIENTS_URL'],
       {
         recipient: {
-          name: "#{name}"
+          name: name.to_s
         }
       },
-      { 
-        authorization: "Bearer #{@token}",
-        content_type: 'application/json' 
-      }
+      authorization: "Bearer #{@token}",
+      content_type: 'application/json'
     )
 
     Recipient.new(JSON.parse(response.body)['recipient'])
@@ -131,13 +128,11 @@ class User
         payment: {
           amount: amount,
           currency: 'GBP',
-          recipient_id: payee.id 
+          recipient_id: payee.id
         }
-      }.to_json, 
-      {
-        content_type: 'application/json',
-        authorization: "Bearer #{@token}"
-      }
+      }.to_json,
+      content_type: 'application/json',
+      authorization: "Bearer #{@token}"
     )
 
     payment = Payment.new(JSON.parse(response.body)['payment'])
