@@ -6,6 +6,10 @@ Application to interact with a payment api (CoolPay)
 Also includes a console interface to get around the application without having to directly use the command line 
 and try and understand how all the classes fit together
 
+To run:
+  ./coolpay.rb (This will run the application with the Console UI [N.B. not complete])
+  rspec (To Run Tests)
+
 # Explaination
 Much of app revolves around the `User` Class. I felt that this was the best way to approach this task since that is the central
 component.
@@ -27,3 +31,6 @@ I've chosen to use Yard as a documentation tool for the User as this maintains r
 
 # Testing
 All requests have been stubbed and tested using RSpec.
+
+# Rubocop
+I tried to keep to the rubocop standards and used the `-a` tag to quickly get my app up to speed with conventions
