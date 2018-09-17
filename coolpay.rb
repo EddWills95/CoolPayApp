@@ -76,7 +76,7 @@ class Coolpay
   def self.display_payments(payments)
     # puts payments.map(&:amount) + `\n`
     payments.each do |p|
-      puts "#{p.amount}//#{p.currency}"
+      puts "#{p.amount}#{p.currency}"
       sleep(2)
     end
   end
