@@ -35,12 +35,11 @@ class User
   #
   def get_token
     response = @http.post(
-      ENV['LOGIN_URL'],
+      ENV['LOGIN_URL'], 
       {
-        username: @username,
-        apikey: @key
-      }.to_json
-    )
+        username: @username, 
+        apikey: @key 
+      }.to_json, { content_type: 'application/json' })
     @token = JSON.parse(response.body)['token']
   end
 
@@ -63,8 +62,10 @@ class User
   def fetch_all_recipients
     response = @http.get(
       ENV['RECIPIENTS_URL'],
-      content_type: 'application/json',
-      authorization: "Bearer #{@token}"
+      {
+        content_type: 'application/json',
+        authorization: "Bearer #{@token}"
+      }
     )
     incoming = JSON.parse(response.body)['recipients'].map { |json| Recipient.new(json) }
     @recipients = incoming
@@ -99,17 +100,17 @@ class User
   # @return [Recipient] New Recipient Object
   #
   def add_recipient(name)
-    body = `{
-      "recipient": {
-        "name": "#{name}"
-      }
-    `
-
     response = @http.post(
       ENV['RECIPIENTS_URL'],
-      body,
-      content_type: 'application/json',
-      authorization: "Bearer #{@token}"
+      {
+        recipient: {
+          name: "#{name}"
+        }
+      },
+      { 
+        authorization: "Bearer #{@token}",
+        content_type: 'application/json' 
+      }
     )
 
     Recipient.new(JSON.parse(response.body)['recipient'])
