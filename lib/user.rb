@@ -26,9 +26,7 @@ class User
   #
   # @return [Boolean]
   #
-  def username
-    @username
-  end
+  attr_reader :username
 
   #
   # Fetch Token from API
@@ -53,8 +51,8 @@ class User
   #
   def logged_in?
     @token ? true : false
-  end  
-  
+  end
+
   # This is a good idea to avoid always having to make the call to the API
 
   # def recpients
@@ -65,10 +63,8 @@ class User
   def fetch_all_recipients
     response = @http.get(
       ENV['RECIPIENTS_URL'],
-      {
-        content_type: 'application/json',
-        authorization: "Bearer #{@token}"
-      }
+      content_type: 'application/json',
+      authorization: "Bearer #{@token}"
     )
     incoming = JSON.parse(response.body)['recipients'].map { |json| Recipient.new(json) }
     @recipients = incoming
@@ -84,14 +80,12 @@ class User
   def search_recipients(term)
     response = @http.get(
       ENV['RECIPIENTS_URL'],
-      {
-        Authorization: {
-          content_type: 'application/json',
-          authorization: "Bearer #{@token}"
-        },
-        params: {
-          name: term
-        }
+      Authorization: {
+        content_type: 'application/json',
+        authorization: "Bearer #{@token}"
+      },
+      params: {
+        name: term
       }
     )
     JSON.parse(response.body)['recipients'].map { |json| Recipient.new(json) }
@@ -100,7 +94,7 @@ class User
   #
   # Add a recipient
   #
-  # @param [String] name 
+  # @param [String] name
   #
   # @return [Recipient] New Recipient Object
   #
@@ -114,10 +108,8 @@ class User
     response = @http.post(
       ENV['RECIPIENTS_URL'],
       body,
-      {
-        content_type: 'application/json',
-        authorization: "Bearer #{@token}"
-      }
+      content_type: 'application/json',
+      authorization: "Bearer #{@token}"
     )
 
     Recipient.new(JSON.parse(response.body)['recipient'])
@@ -127,12 +119,11 @@ class User
   # Create a payment
   #
   # @param [Recipient] payee
-  # @param [Integer] amount 
+  # @param [Integer] amount
   #
   # @return [Payment] Payment Object
   #
   def create_payment(payee, amount)
-
     body = `{
       "payment": {
         "amount": #{amount},
@@ -144,12 +135,10 @@ class User
     response = @http.post(
       ENV['PAYMENT_URL'],
       body,
-      {
-        content_type: 'application/json',
-        authorization: "Bearer #{@token}"
-      }
+      content_type: 'application/json',
+      authorization: "Bearer #{@token}"
     )
-    
+
     payment = Payment.new(JSON.parse(response.body)['payment'])
     @payments.push(payment)
     payment
@@ -163,13 +152,11 @@ class User
   def fetch_all_payments
     response = @http.get(
       ENV['PAYMENT_URL'],
-      {
-        content_type: 'application/json',
-        authorization: "Bearer #{@token}"
-      }
+      content_type: 'application/json',
+      authorization: "Bearer #{@token}"
     )
 
-    incoming = JSON.parse(response.body)['payments'].map { |json| Payment.new(json)}
+    incoming = JSON.parse(response.body)['payments'].map { |json| Payment.new(json) }
     @payments = incoming
   end
 
@@ -178,9 +165,7 @@ class User
   #
   # @return [Array<Payment>] Array of all payments that are currently in memory
   #
-  def payments
-    @payments
-  end
+  attr_reader :payments
 
   #
   # Find a payment in current memory
@@ -190,6 +175,6 @@ class User
   # @return [Payment] Payment object that it finds
   #
   def lookup_payment(id)
-    @payments.select { |p| p.id == id}.first
+    @payments.select { |p| p.id == id }.first
   end
 end

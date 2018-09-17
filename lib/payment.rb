@@ -1,5 +1,7 @@
+#
+# Payment class wrapper
+#
 class Payment
-
   def initialize(args)
     @id = args['id']
     @amount = args['amount'].to_i
@@ -8,23 +10,13 @@ class Payment
     @status = args['status']
   end
 
-  def id
-    @id
-  end
+  attr_reader :id
 
-  def amount
-    @amount
-  end
+  attr_reader :amount
 
-  def currency
-    @currency
-  end
+  attr_reader :currency
 
-  def recipient_id
-    @recipient_id
-  end
+  attr_reader :recipient_id
 
-  def status
-    @status
-  end
+  attr_reader :status
 end

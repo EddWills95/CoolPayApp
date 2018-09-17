@@ -4,16 +4,16 @@ require 'pry'
 
 RSpec.describe User do
   let!(:user) { User.new(ENV['USERNAME'], ENV['API_KEY']) }
-  
+
   it 'should create a new user object' do
     expect(user.username).to eq('EddW')
   end
 
-  it 'should get a token for the user' do 
+  it 'should get a token for the user' do
     mock_login
     expect(user.get_token).to eq('aff06fec-e041-4994-849e-223f0569e0bc')
   end
-  
+
   it 'should have a logged in method' do
     mock_login
     user.get_token
@@ -43,7 +43,6 @@ RSpec.describe User do
   end
 
   describe 'payments' do
-    
     before do
       mock_login
       mock_recipients
@@ -52,7 +51,7 @@ RSpec.describe User do
       user.get_token
     end
 
-    let(:recipient) { Recipient.new(id: '11111', name: 'Mr McNeedy')}
+    let(:recipient) { Recipient.new(id: '11111', name: 'Mr McNeedy') }
 
     it 'should be able to create a payment' do
       expect(user.create_payment(recipient, 20).amount).to eq(20)
@@ -70,4 +69,3 @@ RSpec.describe User do
     end
   end
 end
-

@@ -1,18 +1,13 @@
-# Put all the things into a module!
-
+#
+# Class wrapper for a recipient
+#
 class Recipient
-
   def initialize(args)
     @id = args['id']
     @name = args['name']
   end
 
-  def id
-    @id
-  end
+  attr_reader :id
 
-  def name
-    @name
-  end
-
+  attr_reader :name
 end
