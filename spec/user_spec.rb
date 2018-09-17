@@ -25,11 +25,16 @@ RSpec.describe User do
     before do
       mock_login
       mock_recipients
+      mock_search_recipients
       user.get_token
     end
 
     it 'should be return an array of recpient objects' do
       expect(user.fetch_all_recipients.first.name).to eq('Interesting Person')
+    end
+
+    it 'should return searched recipients' do
+      expect(user.search_recipients('joe').first.name).to eq('Joe Bloggs')
     end
   end
 end

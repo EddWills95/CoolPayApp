@@ -71,5 +71,23 @@ class User
     JSON.parse(response.body)['recipients'].map { |json| Recipient.new(json) }
   end
 
+  def search_recipients(term)
+    response = @http.get(
+      ENV['RECIPIENTS_URL'],
+      {
+        Authorization: {
+          content_type: 'application/json',
+          authorization: "Bearer #{@token}"
+        },
+        params: {
+          name: term
+        }
+      }
+    )
+    JSON.parse(response.body)['recipients'].map { |json| Recipient.new(json) }
+  end
+
 
 end
+
+# Do some error catching !
