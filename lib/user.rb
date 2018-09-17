@@ -74,6 +74,13 @@ class User
     @recipients = incoming
   end
 
+  #
+  # Search for a recipient
+  #
+  # @param [String] term Name of recipient that you are looking for
+  #
+  # @return [Recipient] Recipient Object
+  #
   def search_recipients(term)
     response = @http.get(
       ENV['RECIPIENTS_URL'],
@@ -90,6 +97,13 @@ class User
     JSON.parse(response.body)['recipients'].map { |json| Recipient.new(json) }
   end
 
+  #
+  # Add a recipient
+  #
+  # @param [String] name 
+  #
+  # @return [Recipient] New Recipient Object
+  #
   def add_recipient(name)
     body = `{
       "recipient": {
@@ -109,6 +123,14 @@ class User
     Recipient.new(JSON.parse(response.body)['recipient'])
   end
 
+  #
+  # Create a payment
+  #
+  # @param [Recipient] payee
+  # @param [Integer] amount 
+  #
+  # @return [Payment] Payment Object
+  #
   def create_payment(payee, amount)
 
     body = `{
@@ -133,6 +155,11 @@ class User
     payment
   end
 
+  #
+  # Get all payments
+  #
+  # @return [Array<Payment>] Array of payment objects
+  #
   def fetch_all_payments
     response = @http.get(
       ENV['PAYMENT_URL'],
@@ -146,10 +173,22 @@ class User
     @payments = incoming
   end
 
+  #
+  # Return all payments in memory
+  #
+  # @return [Array<Payment>] Array of all payments that are currently in memory
+  #
   def payments
     @payments
   end
 
+  #
+  # Find a payment in current memory
+  #
+  # @param [String] id String ID of the payment you're looking for
+  #
+  # @return [Payment] Payment object that it finds
+  #
   def lookup_payment(id)
     @payments.select { |p| p.id == id}.first
   end
