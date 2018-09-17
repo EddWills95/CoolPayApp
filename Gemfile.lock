@@ -11,6 +11,7 @@ GEM
     domain_name (0.5.20180417)
       unf (>= 0.0.5, < 1.0.0)
     dotenv (2.5.0)
+    fancy_gets (0.1.9)
     hashdiff (0.3.7)
     http-cookie (1.0.3)
       domain_name (~> 0.5)
@@ -70,6 +71,7 @@ PLATFORMS
 
 DEPENDENCIES
   dotenv
+  fancy_gets
   pry
   rest-client
   rspec
