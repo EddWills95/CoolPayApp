@@ -34,6 +34,8 @@ class Coolpay
     case selection
     when 'Recipients'
       self.recipients
+    when 'Payments'
+      self.payments
     when 'Exit'
       return nil
     end
@@ -68,7 +70,41 @@ class Coolpay
   end
 
   def self.display_recipients(recipients)
-    puts recipients.map(&:name)
+    puts recipients.map(&:name) + `\n`
+  end
+
+  def self.display_payments(payments)
+    puts payments.map(&:value) + `\n`
+  end
+
+  def self.payments
+    selection = gets_list(levels[3])
+    case selection
+    when 'List'
+      payments = @user.fetch_all_payments
+      if payments.length > 0
+        self.display_payments(payments)
+        sleep(1)
+        self.payments
+      else
+        puts 'None to display'
+        sleep(1)
+        self.payments
+      end
+    when 'New'
+      recipients = @user.fetch_all_recipients
+      payee = gets_list(recipients.map(&:name))
+      puts `clear`
+      puts 'Amount: '
+      amount = gets
+      payment = @user.create_payment(payee.id, amount)
+      puts payment 
+      sleep(2)
+      self.payments
+    when 'Back'
+      self.authenticated
+      return 'Exit'
+    end
   end
 
   private
@@ -77,7 +113,8 @@ class Coolpay
     levels = [
       ['Authenticate', 'Exit'],
       ['Recipients', 'Payments', 'Exit'],
-      ['List', 'Add', 'Remove', 'Back']
+      ['List', 'Add', 'Remove', 'Back'],
+      ['List', 'New', 'Back']
     ] 
   end
 end
