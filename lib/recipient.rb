@@ -1,3 +1,5 @@
+# Put all the things into a module!
+
 class Recipient
 
   def initialize(args)

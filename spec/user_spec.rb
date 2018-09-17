@@ -41,4 +41,27 @@ RSpec.describe User do
       expect(user.add_recipient('Jeffery Archer').id).to eq('e9a0336b-d81d-4009-9ad1-8fa1eb43418c')
     end
   end
+
+  describe 'payments' do
+    
+    before do
+      mock_login
+      mock_recipients
+      mock_create_payment
+      user.get_token
+    end
+
+    let(:recipient) { Recipient.new(id: '11111', name: 'Mr McNeedy')}
+
+    it 'should be able to create a payment' do
+      expect(user.create_payment(recipient, 20).amount).to eq(20)
+    end
+
+    it 'should be able to show all payments' do
+      expect(user.payments).to eq([])
+    end
+  
+  end
+
 end
+

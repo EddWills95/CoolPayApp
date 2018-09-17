@@ -3,6 +3,7 @@ Dotenv.load
 require 'json'
 require 'rest_client'
 require 'recipient'
+require 'payment'
 
 class User
   #
@@ -17,6 +18,7 @@ class User
     @key = key
     @token = nil
     @recipients = nil
+    @payments = []
   end
 
   #
@@ -105,6 +107,33 @@ class User
 
     Recipient.new(JSON.parse(response.body)['recipient'])
   end
-end
 
-# Do some error catching !
+  def create_payment(payee, amount)
+
+    body = `{
+      "payment": {
+        "amount": #{amount},
+        "currency": "GBP"
+        recipient_id: #{payee.id}
+      }
+    }`
+
+    response = @http.post(
+      ENV['PAYMENT_URL'],
+      body,
+      {
+        content_type: 'application/json',
+        authorization: "Bearer #{@token}"
+      }
+    )
+    
+    payment = Payment.new(JSON.parse(response.body)['payment'])
+    @payments.push(payment)
+    payment
+  end
+
+  def payments
+    @payments
+  end
+
+end
