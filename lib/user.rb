@@ -70,7 +70,8 @@ class User
         authorization: "Bearer #{@token}"
       }
     )
-    JSON.parse(response.body)['recipients'].map { |json| Recipient.new(json) }
+    incoming = JSON.parse(response.body)['recipients'].map { |json| Recipient.new(json) }
+    @recipients = incoming
   end
 
   def search_recipients(term)
@@ -132,8 +133,24 @@ class User
     payment
   end
 
+  def fetch_all_payments
+    response = @http.get(
+      ENV['PAYMENT_URL'],
+      {
+        content_type: 'application/json',
+        authorization: "Bearer #{@token}"
+      }
+    )
+
+    incoming = JSON.parse(response.body)['payments'].map { |json| Payment.new(json)}
+    @payments = incoming
+  end
+
   def payments
     @payments
   end
 
+  def lookup_payment(id)
+    @payments.select { |p| p.id == id}.first
+  end
 end

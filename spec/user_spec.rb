@@ -48,6 +48,7 @@ RSpec.describe User do
       mock_login
       mock_recipients
       mock_create_payment
+      mock_all_payments
       user.get_token
     end
 
@@ -59,6 +60,13 @@ RSpec.describe User do
 
     it 'should be able to show all payments' do
       expect(user.payments).to eq([])
+    end
+
+    it 'should be able to look up a payment by id' do
+      user.fetch_all_payments
+
+      status = user.lookup_payment('31db334f-9ac0-42cb-804b-09b2f899d4d2').status
+      expect(status).to eq('paid')
     end
   
   end
