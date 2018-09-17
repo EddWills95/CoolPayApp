@@ -19,4 +19,17 @@ RSpec.describe User do
     user.get_token
     expect(user.logged_in?).to eq(true)
   end
+
+  describe 'possible recpients' do
+    
+    before do
+      mock_login
+      mock_recipients
+      user.get_token
+    end
+
+    it 'should be return an array of recpient objects' do
+      expect(user.fetch_all_recipients.first.name).to eq('Interesting Person')
+    end
+  end
 end

@@ -2,6 +2,7 @@ require 'dotenv'
 Dotenv.load
 require 'json'
 require 'rest_client'
+require 'recipient'
 
 class User
   #
@@ -15,6 +16,7 @@ class User
     @username = username
     @key = key
     @token = nil
+    @recipients = nil
   end
 
   #
@@ -49,6 +51,25 @@ class User
   #
   def logged_in?
     @token ? true : false
+  end  
+  
+  # This is a good idea to avoid always having to make the call to the API
+
+  # def recpients
+  #   return @recipients unless !@recipients
+  #   return 'Must fetch first'
+  # end
+
+  def fetch_all_recipients
+    response = @http.get(
+      ENV['RECIPIENTS_URL'],
+      {
+        content_type: 'application/json',
+        authorization: "Bearer #{@token}"
+      }
+    )
+    JSON.parse(response.body)['recipients'].map { |json| Recipient.new(json) }
   end
+
 
 end
